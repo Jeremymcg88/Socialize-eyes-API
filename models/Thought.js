@@ -1,50 +1,75 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
+// Import date utility
+const dateFormat = require('../utils/dateFormat');
 
-const UserSchema = new Schema(
-  {
-    username: {
-      type: String,
-      unique: true,
-      trim: true,
-      required: 'Please enter a username!'
-    },
-    email: {
-      type: String,
-      required: 'Please enter a valid email!',
-      unique: true,
-      // Confirms input value is a valid email format
-      match: [/.+@.+\..+/, 'Please enter a valid e-mail address']
-    },
-    // References thought model
-    thoughts: [
-        {
+// Subdocument schema to the Thought model
+const ReactionSchema = new Schema(
+    {
+        reactionId: { 
             type: Schema.Types.ObjectId,
-            ref: 'Thought'
+            default: () => new Types.ObjectId()
+        },
+        reactionBody: { 
+            type: String,
+            required: 'Please enter text.',
+            max: 280
+        },
+        username: {
+            type: String,
+            required: 'Please enter your valid username.'
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: createdAtVal => dateFormat(createdAtVal)
         }
-    ],    
-    // References self to add User(s) as friends by _id
-    friends: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ],
-  },
-  {
-    toJSON: {
-      // Allows virtuals
-      virtuals: true
     },
-    id: false
-  }
+    {
+        toJSON: {
+            getters: true
+        },
+        _id: false
+    }
 );
 
-// This is a virtual to get the length of the user's friends array field on query
-UserSchema.virtual('friendCount').get(function() {
-  return this.friends.length;
+// This is the schema for the Thought model
+const ThoughtSchema = new Schema(
+    {
+        thoughtText: {
+            type: String,
+            required: 'Please enter text!',
+            min: [1, 'Not enough characters!'],
+            max: 280
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: createdAtVal => dateFormat(createdAtVal)
+        },
+        username: {
+            type: String,
+            required: 'Please enter your valid username.'
+        },
+        userId: {
+            type: String,
+            required: true
+        },
+        reactions: [ReactionSchema]
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        },
+        id: false
+    }
+);
+
+// This virtual gets the length of the reactions array field on query for a thought
+ThoughtSchema.virtual('reactionCount').get(function() {
+    return this.reactions.length;
 });
 
-// User model uses UserSchema
-const User = model('User', UserSchema);
+const Thought = model('Thought', ThoughtSchema);
 
-module.exports = User;
+module.exports = Thought;
