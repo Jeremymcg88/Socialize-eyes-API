@@ -4,6 +4,8 @@
 
 ## Description
 
+Utilizing a newly learned technology (MongoDB) we were able to create a 
+
 ## Table of Contents
 
 * [Images](#Images)
