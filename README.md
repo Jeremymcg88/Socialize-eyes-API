@@ -22,13 +22,17 @@ Utilizing a newly learned technology (MongoDB) we were able to create a
 
 * [Questions](#questions)
 
-* [Deployed](#deployed)
+* [Video Walkthrough](#videowalkthrough)
 
 * [Repository](#repository)
 
 ## Images 
 
+
+
 ## Built-With
+
+Node.js, MongoDB (NoSQL), Express.js, and Mongoose ODM 
 
 ## Installation
 
@@ -40,6 +44,8 @@ npm i
 ```
 
 ## Usage
+
+The usage is intended to display using MongoDB to utilize CRUD and REST API. 
 
 ## License
 
@@ -53,9 +59,9 @@ Code for everyone to enjoy.
 
 If you have any questions please reach out to me via email at jeremy.mcguirk@gmail.com
 
-## Deployed
+## Video Walkthrough
 
-
+https://watch.screencastify.com/v/ahDy69BHazOtbY3lNYNr
 
 ## Repository
 
